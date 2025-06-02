@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  mount ActionCable.server => '/cable'
   devise_for :users
 
   resources :users, only: [:index, :edit, :update]
@@ -25,6 +26,4 @@ Rails.application.routes.draw do
       get :export_csv
     end
   end
-
-  mount ActionCable.server => '/cable'
 end

@@ -67,3 +67,7 @@ group :test do
 end
 gem 'devise'
 gem 'bootstrap', '~> 5.1.3'
+gem 'csv'
+gem 'actioncable'
+gem 'redis'
+gem 'redis-rails'

@@ -4,8 +4,6 @@
   <%= link_to 'New Leave', new_leave_application_path, class: 'btn btn-primary mb-3' %>
 <% end %>
 
-<%= link_to 'Export CSV', export_csv_leave_applications_path, class: 'btn btn-success mb-3' if current_user.manager? || current_user.hr? || current_user.admin? %>
-
 <table class="table table-bordered">
   <thead>
     <tr>

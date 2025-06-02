@@ -1,10 +1,11 @@
 import consumer from "./consumer"
 
 consumer.subscriptions.create("LeaveChannel", {
+  connected() {
+    console.log("✅ Subscribed to LeaveChannel");
+  },
   received(data) {
-    const row = document.getElementById(`leave-${data.leave_id}`)
-    if (row) {
-      row.classList.add(data.edited ? 'table-warning' : 'table-success')
-    }
+    console.log("📡 Received update via ActionCable:", data);
+    // You can also update DOM here
   }
-})
+});

@@ -1,4 +1,5 @@
 <h1>Employee Leaves</h1>
+<%= link_to 'Export CSV', export_csv_leave_applications_path, class: 'btn btn-success mb-3' if current_user.manager? || current_user.hr? || current_user.admin? %>
 
 <table class="table table-bordered table-striped">
   <thead class="table-light">
@@ -15,25 +16,17 @@
   </thead>
   <tbody>
     <% @leaves.each do |leave| %>
-      <tr>
+      <tr id="leave-row-<%= leave.id %>">
         <td><%= leave.user.name %></td>
         <td><%= leave.start_date.strftime("%Y-%m-%d") %></td>
         <td><%= leave.end_date.strftime("%Y-%m-%d") %></td>
-        <td>
-          <% status_class = case leave.status
-            when "pending" then "text-warning"
-            when "accepted" then "text-success"
-            when "rejected" then "text-danger"
-            else ""
-          end %>
-          <span class="<%= status_class %>"><%= leave.status.capitalize %></span>
-        </td>
+        <td class="leave-status"><%= leave.status.capitalize %></td>
         <td><%= leave.reason %></td>
         <td><%= leave.rejection_reason.presence || "-" %></td>
         <td><%= leave.approver&.name || "-" %></td>
         <td>
           <% if leave.pending? && (current_user.manager? || current_user.hr? || current_user.admin?) %>
-            <%= link_to 'Approve', approve_leave_application_path(leave), method: :patch, class: "btn btn-sm btn-success" %>
+            <%= button_to 'Approve', approve_leave_application_path(leave), method: :patch, data: { confirm: "Approve this leave?" }, class: "btn btn-success btn-sm" %>
             <%= link_to 'Reject', reject_leave_application_path(leave), method: :patch, class: "btn btn-sm btn-danger" %>
           <% else %>
             -
