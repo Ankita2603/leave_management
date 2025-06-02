@@ -1,0 +1,20 @@
+<h2>Edit Employee</h2>
+
+<%= form_with model: @user, local: true do |f| %>
+  <div class="mb-3">
+    <%= f.label :name %>
+    <%= f.text_field :name, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :email %>
+    <%= f.email_field :email, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :manager_id, "Assign Manager" %>
+    <%= f.collection_select :manager_id, @managers || [], :id, :name, { prompt: "Select Manager" }, class: "form-select" %>
+  </div>
+
+  <%= f.submit "Save", class: "btn btn-primary" %>
+<% end %>

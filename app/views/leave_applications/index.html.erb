@@ -1,0 +1,54 @@
+<h2><%= current_user.manager? ? "Leave Applications from Employees" : "My Leave Applications" %></h2>
+
+<% if (current_user.employee? || current_user.hr? || current_user.manager?) %>
+  <%= link_to 'New Leave', new_leave_application_path, class: 'btn btn-primary mb-3' %>
+<% end %>
+
+<%= link_to 'Export CSV', export_csv_leave_applications_path, class: 'btn btn-success mb-3' if current_user.manager? || current_user.hr? || current_user.admin? %>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <% if current_user.manager? || current_user.hr? || current_user.admin? %>
+        <th>Employee</th>
+      <% end %>
+      <th>Start Date</th>
+      <th>End Date</th>
+      <th>Status</th>
+      <th>Reason</th>
+      <th>Approver</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @leaves.each do |leave| %>
+      <% can_approve = current_user.can_approve_leaves_for?(leave.user) %>
+      <tr id="leave-<%= leave.id %>" class="<%= 'table-warning' if leave.edited %>">
+        <% if current_user.manager? || current_user.hr? || current_user.admin? %>
+          <td><%= leave.user.name %></td>
+        <% end %>
+        <td><%= leave.start_date %></td>
+        <td><%= leave.end_date %></td>
+        <td><%= leave.status.capitalize %></td>
+        <td><%= leave.reason %></td>
+        <td>
+          <% if leave.approver.present? %>
+            <%= "#{leave.approver.name} (#{leave.approver.role})" %>
+          <% else %>
+            <%= "-" %>
+          <% end %>
+        </td>
+        <td>
+          <% if current_user.can_approve_leaves_for?(leave.user) && leave.pending? %>
+            <%= button_to 'Approve', approve_leave_application_path(leave), method: :patch, data: { confirm: "Approve this leave?" }, class: "btn btn-success btn-sm" %>
+            <%= link_to 'Reject', reject_leave_application_path(leave), class: "btn btn-danger btn-sm ms-2" %>
+          <% end %>
+
+          <% if current_user == leave.user && leave.pending? %>
+            <%= link_to 'Edit', edit_leave_application_path(leave), class: 'btn btn-sm btn-warning' %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

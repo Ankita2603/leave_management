@@ -1,0 +1,14 @@
+<h2>Reject Leave Application</h2>
+
+<p><strong>Employee:</strong> <%= @leave_application.user.name %></p>
+<p><strong>Leave Dates:</strong> <%= @leave_application.start_date %> to <%= @leave_application.end_date %></p>
+<p><strong>Reason:</strong> <%= @leave_application.reason %></p>
+
+<%= form_with model: @leave_application, url: update_rejection_leave_application_path(@leave_application), method: :patch do |f| %>
+  <div class="mb-3">
+    <%= f.label :rejection_reason, "Rejection Reason" %>
+    <%= f.text_area :rejection_reason, required: true, class: "form-control" %>
+  </div>
+  <%= f.submit "Submit Rejection", class: "btn btn-danger" %>
+  <%= link_to "Cancel", leave_applications_path, class: "btn btn-secondary ms-2" %>
+<% end %>

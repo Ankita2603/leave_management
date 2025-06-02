@@ -1,0 +1,24 @@
+<h2>Employee List</h2>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Manager</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.name %></td>
+        <td><%= user.email %></td>
+        <td><%= user.manager&.name || "-" %></td>
+        <td>
+          <%= link_to "Edit", edit_user_path(user), class: "btn btn-sm btn-primary" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

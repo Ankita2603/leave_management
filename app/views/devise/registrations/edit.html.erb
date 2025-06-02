@@ -1,0 +1,53 @@
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-7">
+      <div class="card shadow-lg rounded">
+        <div class="card-header bg-primary text-white text-center">
+          <h2 class="card-title mb-0">Edit <%= resource_name.to_s.humanize %></h2>
+        </div>
+        <div class="card-body p-4">
+          <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+            <%= render "devise/shared/error_messages", resource: resource %>
+
+            <div class="form-group mb-3">
+              <%= f.label :name %><br />
+              <%= f.text_field :name, autocomplete: "name", class: "form-control" %>
+            </div>
+
+            <div class="form-group mb-3">
+              <%= f.label :email %><br />
+              <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control" %>
+            </div>
+
+            <div class="form-group mb-3">
+              <%= f.label :role, "Role" %><br />
+              <%= f.select :role, User.roles.except("admin").map { |k,v| [k.titleize, k] }, {}, class: "form-control" %>
+            </div>
+
+            <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+              <div class="alert alert-info" role="alert">
+                Currently waiting confirmation for: <%= resource.unconfirmed_email %>
+              </div>
+            <% end %>
+
+            <% if current_user.hr? || current_user.admin? %>
+              <div class="form-group mb-3">
+                <%= f.label :manager_id, "Manager" %>
+                <%= f.collection_select :manager_id, User.manager, :id, :name, { prompt: "Select Manager" }, class: "form-control" %>
+              </div>
+            <% end %>
+
+            <div class="d-grid gap-2">
+              <%= f.submit "Update", class: "btn btn-primary btn-lg btn-block" %>
+            </div>
+          <% end %>
+        </div>
+        <div class="card-footer bg-light text-center">
+          <h3>Cancel my account</h3>
+          <p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_method: :delete }, class: "btn btn-danger" %></p>
+          <%= link_to "Back", :back, class: "btn btn-link" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

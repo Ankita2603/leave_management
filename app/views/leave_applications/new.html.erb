@@ -1,0 +1,27 @@
+<% if @leave.errors.any? %>
+  <div class="alert alert-danger">
+    <ul>
+      <% @leave.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<h2><%= @leave.new_record? ? "Apply for Leave" : "Edit Leave" %></h2>
+
+<%= form_with model: @leave, local: true do |f| %>
+  <div class="form-group">
+    <%= f.label :start_date %>
+    <%= f.date_field :start_date, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= f.label :end_date %>
+    <%= f.date_field :end_date, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= f.label :reason %>
+    <%= f.text_area :reason, class: 'form-control' %>
+  </div>
+  <%= f.submit class: 'btn btn-primary mt-2' %>
+<% end %>
